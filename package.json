@@ -1,37 +1,45 @@
 {
+  "name": "@jeportie/via",
   "version": "0.0.0-semantically-released",
-  "name": "@mawhea/npm-package-starter",
-  "description": "A scaffolding for npm packages written in TypeScript",
-  "author": "Matthew Wheatley <mattjwheatley@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mjwheatley/npm-package-starter.git"
-  },
-  "keywords": [
-    "npm",
-    "package",
-    "node",
-    "module",
-    "scaffolding",
-    "starter",
-    "typescript",
-    "vitest",
-    "eslint",
-    "prettier",
-    "husky",
-    "commitlint",
-    "cspell",
-    "secretlint"
-  ],
+  "description": "A type-safe, extensible Fetch wrapper for modern TypeScript APIs.",
+  "author": "Jérôme Portier <jeromep.dev@gmail.com>",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeportie/via.git"
+  },
+  "homepage": "https://github.com/jeportie/via",
+  "bugs": {
+    "url": "https://github.com/jeportie/via/issues"
+  },
+  "keywords": [
+    "fetch",
+    "http",
+    "api",
+    "sdk",
+    "typescript",
+    "typed",
+    "openapi",
+    "rest",
+    "client",
+    "library"
+  ],
   "type": "module",
   "main": "dist/cjs/index.js",
   "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
-  "packageManager": "pnpm@9.6.0+sha256.dae0f7e822c56b20979bb5965e3b73b8bdabb6b8b8ef121da6d857508599ca35",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "packageManager": "pnpm@9.6.0",
   "scripts": {
     "check": "pnpm format && pnpm lint && pnpm typecheck && pnpm secretlint && pnpm spellcheck && pnpm test",
     "build": "pnpm check && rimraf dist && pnpm build:cjs && pnpm build:mjs",
@@ -43,7 +51,7 @@
     "format": "prettier . --write",
     "lint": "eslint ./*.{ts,js,cjs,mjs} ./src ./__tests__ --ext .ts",
     "typecheck": "tsc --noEmit",
-    "secretlint": "secretlint ./src ./tests  --maskSecrets",
+    "secretlint": "secretlint ./src ./__tests__ --maskSecrets",
     "spellcheck": "cspell --no-progress \"./**/*.ts\" \"./*.{md,js,cjs,mjs,ts,cts,mts,json,yml}\"",
     "dev": "vitest unit",
     "test": "vitest --no-cache --run --silent",
@@ -91,28 +99,5 @@
       "npx prettier --write",
       "npx eslint --fix"
     ]
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/mjs/index.js"
-    },
-    "./constants": {
-      "types": "./dist/types/constants.d.ts",
-      "require": "./dist/cjs/constants.js",
-      "import": "./dist/mjs/constants.js"
-    },
-    "./hello-world": {
-      "types": "./dist/types/hello-world.d.ts",
-      "require": "./dist/cjs/hello-world.js",
-      "import": "./dist/mjs/hello-world.js"
-    },
-    "./*": {
-      "types": "./dist/types/*.d.ts",
-      "require": "./dist/cjs/*.js",
-      "import": "./dist/mjs/*.js"
-    },
-    "./package.json": "./package.json"
   }
 }
