@@ -39,6 +39,9 @@
     },
     "./package.json": "./package.json"
   },
+  "bin": {
+    "via": "dist/mjs/cli/index.js"
+  },
   "packageManager": "pnpm@9.6.0",
   "scripts": {
     "check": "pnpm format && pnpm lint && pnpm typecheck && pnpm secretlint && pnpm spellcheck && pnpm test",
@@ -68,6 +71,7 @@
     "@secretlint/secretlint-rule-pattern": "^8.2.4",
     "@secretlint/secretlint-rule-preset-recommend": "^8.2.4",
     "@stylistic/eslint-plugin": "^2.3.0",
+    "@types/inquirer": "~8.2.12",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.12",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
@@ -99,5 +103,9 @@
       "npx prettier --write",
       "npx eslint --fix"
     ]
+  },
+  "dependencies": {
+    "inquirer": "~8.2.6",
+    "openapi-typescript": "~7.10.1"
   }
 }
