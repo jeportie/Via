@@ -59,6 +59,7 @@ export default class FetchApi<D extends keyof ApiRegistry> {
     }
 
     const response = await fetch(url, options);
+
     if (!response.ok) {
       throw new Error(`[API Error]: ${response.status} from: %{endpoint}`);
     }
