@@ -1,0 +1,16 @@
+{
+  "name": "2026-01-14-trainfetch",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "type": "module",
+  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.9",
+    "ts-morph": "^27.0.2",
+    "typescript": "^5.9.3"
+  }
+}

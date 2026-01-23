@@ -59,6 +59,63 @@ Build process runs TypeScript compiler twice with different configs:
 - `tsconfig.build-cjs.json` for CommonJS
 - `tsconfig.build-mjs.json` for ESM
 
+## Kanban Task Management System
+
+This project uses a kanban-style system for tracking tasks and features located in `.kanban/`.
+
+### Folder Structure
+
+```
+.kanban/
+├── to-do/       # Tasks ready to be worked on
+├── to-test/     # Tasks implemented and ready for testing
+├── hold-on/     # Tasks blocked or on hold
+├── done/        # Completed tasks
+├── analyze/     # Tasks requiring analysis or investigation
+└── agents/      # Specialized agent documentation
+```
+
+### Workflow
+
+1. **Create requests**: Add `001_request.md` files in `.kanban/to-do/` with **one task or feature per file**
+2. **Sequential naming**: Use `001_request.md`, `002_request.md`, etc. (leading zeros for proper sorting)
+3. **Move between folders**: As work progresses, move files between folders (don't copy)
+4. **Track progress**: Files move through the workflow stages until completion
+
+### Request File Format
+
+Each request file should contain:
+- Clear description of the task/feature
+- Acceptance criteria (checkboxes)
+- Context and background information
+- Any relevant notes or constraints
+
+See `.kanban/README.md` for the complete template.
+
+### Specialized Agents
+
+Three specialized agents are available to assist with different phases:
+
+**Einstein Agent** (`.kanban/agents/EINSTEIN_AGENT.md`)
+- Deep analysis and investigation
+- Architecture and design decisions
+- Problem-solving and strategic planning
+- Use for tasks in `analyze/` folder
+
+**Tester Agent** (`.kanban/agents/TESTER_AGENT.md`)
+- Comprehensive testing implementation
+- Test coverage improvement
+- Bug verification and regression testing
+- Use for tasks in `to-test/` folder
+
+**Refactor Agent** (`.kanban/agents/REFACTOR_AGENT.md`)
+- Code quality improvement
+- Performance optimization
+- Technical debt reduction
+- Architecture refinement
+
+When working on tasks, consult the appropriate agent documentation for guidance on best practices and workflows.
+
 ## Core Architecture
 
 ### Type System (`src/types.ts`)
