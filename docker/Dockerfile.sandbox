@@ -1,0 +1,82 @@
+# Via Claude Code Sandbox
+# Isolated environment for AI pair programming
+# Security: No sudo, no secrets, limited permissions
+
+FROM node:20-alpine
+
+LABEL maintainer="jeromep.dev@gmail.com"
+LABEL description="Secure sandbox for Via development with Claude Code"
+LABEL version="1.0.0"
+
+# Install basic utilities
+RUN apk add --no-cache \
+    git \
+    bash \
+    curl \
+    make \
+    openssh-client
+
+# Create non-root user for Claude
+RUN addgroup -S claude && \
+    adduser -S claude -G claude -s /bin/sh
+
+# Install pnpm globally
+RUN npm install -g pnpm@9.6.0
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy package files first (for layer caching)
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies as root
+RUN pnpm install --frozen-lockfile
+
+# Copy project files (excluding secrets via .dockerignore)
+COPY . .
+
+# Remove any potential secrets (defense in depth)
+RUN rm -rf \
+    .env* \
+    .secret* \
+    credentials* \
+    .ssh \
+    .aws \
+    .config \
+    .npmrc \
+    .yarnrc \
+    *.pem \
+    *.key \
+    *.p12 \
+    *.pfx \
+    2>/dev/null || true
+
+# Set ownership to claude user
+RUN chown -R claude:claude /workspace
+
+# Create a restricted sudoers file (denies all sudo)
+RUN echo "claude ALL=(ALL) NOPASSWD: /bin/false" > /etc/sudoers.d/claude && \
+    chmod 0440 /etc/sudoers.d/claude
+
+# Switch to non-root user
+USER claude
+
+# Set environment variables
+ENV NODE_ENV=development
+ENV CI=false
+ENV SANDBOX=true
+
+# Expose development ports (optional)
+EXPOSE 3000 5173
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD node --version || exit 1
+
+# Default command
+CMD ["/bin/sh"]
+
+# Usage:
+# Build: docker build -t via-sandbox -f docker/Dockerfile.sandbox .
+# Run: docker run -it --rm -v $(PWD):/workspace via-sandbox
+# Secure: docker run -it --rm -v $(PWD):/workspace:ro --read-only --tmpfs /tmp --network none via-sandbox

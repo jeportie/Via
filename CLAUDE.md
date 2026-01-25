@@ -12,12 +12,98 @@ Key capabilities:
 - Support for both typed (OpenAPI-based) and untyped fetch operations
 - Dual-build output (CommonJS + ESM)
 
-## Build & Development Commands
+## AI/Human Pair Programming System
+
+This project uses a professional AI/human collaborative development system with Docker sandbox isolation, Makefile automation, and a structured Kanban workflow.
+
+### Quick Start
+
+```bash
+# Initial setup (first time only)
+make setup
+
+# Enter the Claude Code sandbox (most common command)
+make claude
+
+# View available commands
+make help
+
+# Check project status
+make kanban-status
+make stats
+```
+
+### Makefile Commands
+
+The project uses a comprehensive Makefile with 50+ commands organized into categories:
+
+**Most Used Commands:**
+```bash
+make claude              # Enter Docker sandbox (secure AI environment)
+make dev                 # Start development mode (watch tests)
+make test                # Run all tests
+make check               # Run all quality checks
+make ci                  # Run CI locally (same as GitHub Actions)
+make kanban-status       # View Kanban board status
+make commit-ready        # Prepare code for commit
+```
+
+**Docker Sandbox:**
+```bash
+make sandbox             # Build and enter sandbox
+make sandbox-secure      # Enter secure sandbox (read-only, no network)
+make sandbox-clean       # Remove sandbox image
+make sandbox-exec CMD="pnpm test"  # Execute command in sandbox
+```
+
+**Development:**
+```bash
+make install             # Install dependencies with pnpm
+make build               # Build project (CJS + ESM)
+make clean               # Clean build artifacts
+make dev                 # Watch mode
+```
+
+**Testing:**
+```bash
+make test                # All tests
+make test-unit           # Unit tests only
+make test-integration    # Integration tests only
+make test-coverage       # Coverage report
+```
+
+**Quality Checks:**
+```bash
+make check               # All checks (format, lint, typecheck, test)
+make lint                # ESLint
+make lint-fix            # ESLint with auto-fix
+make format              # Prettier format
+make typecheck           # TypeScript check
+```
+
+**Kanban Workflow:**
+```bash
+make kanban-status       # Show board status
+make kanban-list         # List all todos
+make kanban-move FROM=to-do TO=in-progress FILE=001_task.md
+make branch-create TODO=001  # Create feature branch
+```
+
+**CI/CD:**
+```bash
+make ci                  # Full CI pipeline locally
+make ci-quick            # Quick checks (no tests)
+make prepublish          # Prepare for npm publish
+```
+
+See `make help` for all 50+ commands or refer to the [Quick Start Guide](.claude/QUICK_START.md).
 
 ### Package Manager
 This project uses `pnpm` (version 9.6.0). All commands should use `pnpm`, not `npm` or `yarn`.
 
-### Common Commands
+### Direct pnpm Commands
+
+You can also use pnpm directly (especially inside the sandbox):
 
 ```bash
 # Install dependencies
@@ -61,60 +147,154 @@ Build process runs TypeScript compiler twice with different configs:
 
 ## Kanban Task Management System
 
-This project uses a kanban-style system for tracking tasks and features located in `.kanban/`.
+This project uses a professional kanban-style system following Agile, DDD, and CI/CD principles. Tasks flow through defined stages with specialized AI agents handling each phase.
 
 ### Folder Structure
 
 ```
 .kanban/
-├── to-do/       # Tasks ready to be worked on
-├── to-test/     # Tasks implemented and ready for testing
-├── hold-on/     # Tasks blocked or on hold
-├── done/        # Completed tasks
-├── analyze/     # Tasks requiring analysis or investigation
-└── agents/      # Specialized agent documentation
+├── backlog/         # Future work and ideas
+├── to-do/           # Ready for implementation
+├── hold-on/         # Needs human decision or architecture discussion
+├── in-progress/     # Currently being implemented
+├── to-test/         # Implementation complete, ready for testing
+├── analyze/         # Code review, refactoring, DevOps review
+├── done/            # Completed and merged to main
+├── groups/          # Todo grouping metadata
+└── TODO_TEMPLATE.md # Standard todo format
 ```
 
-### Workflow
+### Workflow Stages
 
-1. **Create requests**: Add `001_request.md` files in `.kanban/to-do/` with **one task or feature per file**
-2. **Sequential naming**: Use `001_request.md`, `002_request.md`, etc. (leading zeros for proper sorting)
-3. **Move between folders**: As work progresses, move files between folders (don't copy)
-4. **Track progress**: Files move through the workflow stages until completion
+**Backlog** → **To-Do** → **Hold-On** (optional) → **In-Progress** → **To-Test** → **Analyze** → **Done**
 
-### Request File Format
+1. **Backlog**: Ideas and future features collected here
+2. **To-Do**: Tasks ready to be implemented (clear requirements, no blockers)
+3. **Hold-On**: Tasks needing human input (architecture decisions, unclear requirements)
+4. **In-Progress**: Active development (git branch created, implementation started)
+5. **To-Test**: Implementation complete, tests being validated
+6. **Analyze**: Code review, refactoring, security audit, DevOps review
+7. **Done**: Approved, merged to main, deployed
 
-Each request file should contain:
-- Clear description of the task/feature
-- Acceptance criteria (checkboxes)
-- Context and background information
-- Any relevant notes or constraints
+### Todo File Format
 
-See `.kanban/README.md` for the complete template.
+Each todo follows a standardized template with these sections:
+
+```markdown
+# [TODO ID] - [Title]
+
+## 📋 Description
+[What needs to be done]
+
+## 🎯 Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+
+## 🧪 How to Test
+[Testing instructions for human and AI]
+
+## ✅ When to Validate
+[Conditions for completion]
+
+## 🛠️ How to Implement
+- Implementation Approach
+- Difficulty Level
+- Key Files Involved
+- Attention Points
+- Step-by-step guide
+
+## 📚 Context & References
+[Links and documentation]
+
+## 🔗 Dependencies
+[Related todos]
+```
+
+See `.kanban/TODO_TEMPLATE.md` for the complete template.
 
 ### Specialized Agents
 
-Three specialized agents are available to assist with different phases:
+Seven specialized agents handle different workflow phases (located in `.claude/agents/`):
 
-**Einstein Agent** (`.kanban/agents/EINSTEIN_AGENT.md`)
-- Deep analysis and investigation
-- Architecture and design decisions
-- Problem-solving and strategic planning
-- Use for tasks in `analyze/` folder
+**1. Planner Agent**
+- Creates structured todos from requirements
+- Assigns difficulty and priority
+- Identifies dependencies
+- Use: When creating new todos from ideas/issues
 
-**Tester Agent** (`.kanban/agents/TESTER_AGENT.md`)
-- Comprehensive testing implementation
-- Test coverage improvement
-- Bug verification and regression testing
-- Use for tasks in `to-test/` folder
+**2. Architect Agent** (`.claude/agents/EINSTEIN_AGENT.md`)
+- Handles architecture discussions
+- Presents options with pros/cons
+- Documents technical decisions
+- Use: For tasks in `hold-on/` needing human input
 
-**Refactor Agent** (`.kanban/agents/REFACTOR_AGENT.md`)
-- Code quality improvement
-- Performance optimization
-- Technical debt reduction
-- Architecture refinement
+**3. Implementer Agent**
+- Executes implementation
+- Creates git branches
+- Writes code and tests
+- Use: For tasks in `in-progress/`
 
-When working on tasks, consult the appropriate agent documentation for guidance on best practices and workflows.
+**4. Tester Agent** (`.claude/agents/TESTER_AGENT.md`)
+- Validates acceptance criteria
+- Runs test suite
+- Checks coverage
+- Use: For tasks in `to-test/`
+
+**5. Analyzer Agent** (`.claude/agents/REFACTOR_AGENT.md`)
+- Code quality review
+- Performance analysis
+- Security audit
+- Refactoring suggestions
+- Use: For tasks in `analyze/`
+
+**6. Release Agent**
+- Version management
+- Changelog generation
+- Merges to main
+- Creates releases
+- Use: For approved tasks moving to `done/`
+
+**7. Issue Sync Agent**
+- Syncs GitHub issues
+- Creates todos from issues
+- Updates issue status
+- Use: Automatic sync (hourly/daily)
+
+### Git Integration
+
+Each todo gets its own git branch:
+- **Features**: `feat/001-feature-name`
+- **Fixes**: `fix/002-bug-name`
+- **Refactor**: `refactor/003-cleanup`
+
+Use `make branch-create TODO=001` to create branches automatically.
+
+### Viewing and Managing Todos
+
+```bash
+# View board status
+make kanban-status
+
+# List all todos
+make kanban-list
+
+# Move todo between stages
+make kanban-move FROM=to-do TO=in-progress FILE=001_task.md
+
+# Create feature branch from todo
+make branch-create TODO=001
+```
+
+### Security & Isolation
+
+All AI work happens in a Docker sandbox with:
+- No sudo access
+- Secrets removed
+- Resource limits
+- Optional network isolation
+- Read-only filesystem option
+
+Enter sandbox: `make claude`
 
 ## Core Architecture
 
@@ -227,3 +407,107 @@ Commit format: `type(scope?): subject`
 3. **Generic constraints**: Base URL and endpoints are constrained by registry
 4. **Separation of concerns**: CLI, types, runtime client are independent layers
 5. **Dual-format output**: Supports both ESM and CJS consumers
+
+## Docker Sandbox Environment
+
+The project includes a secure Docker sandbox for AI pair programming:
+
+### Features
+- **Isolated Environment**: AI runs in containerized environment
+- **Security**: No sudo access, secrets removed, capabilities dropped
+- **Resource Limits**: CPU, memory, and process limits enforced
+- **Network Options**: Can run with or without network access
+- **Read-Only Mode**: Optional immutable filesystem
+
+### Usage
+
+```bash
+# Enter sandbox (most common)
+make claude
+
+# Secure mode (read-only, no network)
+make sandbox-secure
+
+# Execute command without entering
+make sandbox-exec CMD="pnpm test"
+
+# Using docker-compose
+docker-compose up -d via-sandbox
+docker-compose exec via-sandbox sh
+```
+
+### Configuration
+
+- **Dockerfile**: `docker/Dockerfile.sandbox`
+- **Compose**: `docker-compose.yml`
+- **Security**: Non-root user, no privileged operations
+- **Secrets**: Excluded via `.dockerignore`
+
+## Documentation
+
+### Core Documentation
+- **[System Design](.claude/SYSTEM_DESIGN.md)**: Complete architecture (500+ lines)
+  - Workflow stages and agent specifications
+  - Git branching strategy
+  - CI/CD pipelines
+  - Security features
+  - Advanced features (grouping, issue sync, rollback)
+
+- **[Quick Start](.claude/QUICK_START.md)**: 5-minute onboarding guide
+  - Common commands
+  - Typical workflows
+  - Best practices
+  - Troubleshooting
+
+- **[Implementation Summary](.claude/IMPLEMENTATION_SUMMARY.md)**: What's been built
+  - Current state
+  - Features implemented
+  - Next steps
+  - Success metrics
+
+### Kanban Documentation
+- **[Todo Template](.kanban/TODO_TEMPLATE.md)**: Standard format for all todos
+- **[Kanban README](.kanban/README.md)**: Workflow guide
+
+### Agent Documentation
+Located in `.claude/agents/`:
+- Specialized agent specifications
+- Best practices for each workflow stage
+- When to use which agent
+
+## Best Practices for AI Assistants
+
+### Working with the Codebase
+
+1. **Always work in sandbox**: Run `make claude` before making changes
+2. **Check Kanban first**: Run `make kanban-status` to see current work
+3. **Follow todo template**: Use `.kanban/TODO_TEMPLATE.md` for new todos
+4. **One todo per file**: Keep todos focused and small
+5. **Move between stages**: Use `make kanban-move` as work progresses
+6. **Create feature branches**: Use `make branch-create TODO=NNN`
+7. **Run quality checks**: Use `make commit-ready` before committing
+8. **Document decisions**: Update CLAUDE.md when patterns change
+
+### Architecture Decisions
+
+When faced with architectural choices:
+1. **Move to hold-on**: Don't guess, ask human
+2. **Present options**: Show pros/cons of each approach
+3. **Document decision**: Update CLAUDE.md with chosen pattern
+4. **Update todos**: Reflect decision in implementation steps
+
+### Code Quality
+
+- **TypeScript strict mode**: No `any` types in public APIs
+- **Test coverage**: >80% required
+- **Conventional commits**: Required for semantic versioning
+- **Small PRs**: One todo = one PR ideally
+- **Security**: Never commit secrets, always run in sandbox
+
+### Using Makefile Commands
+
+Prefer Makefile commands over direct tool invocation:
+- ✅ `make test` (consistent, documented)
+- ❌ `pnpm test` (direct, less discoverable)
+
+Exception: Inside sandbox, use `pnpm` commands directly for interactive work.
