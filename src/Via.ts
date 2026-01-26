@@ -13,7 +13,7 @@
 import type { ApiRegistry } from './apiRegistry.js';
 import type { ApiBody, ApiReturn, EndpointKey, FilterRoutes, HttpMethods } from './types.js';
 
-export default class FetchApi<D extends keyof ApiRegistry> {
+export default class Via<D extends keyof ApiRegistry> {
   #baseUrl: D;
 
   constructor(baseUrl: D) {
