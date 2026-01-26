@@ -2,9 +2,7 @@
 
 > Type-safe fetch wrapper for TypeScript. Zero config, maximum DX.
 
-[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
+[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
 
 **Via** is a lightweight, composable fetch wrapper that brings compile-time type safety to your REST API clients. Generate TypeScript types from OpenAPI schemas, get full IntelliSense, and catch errors before runtime.
 
@@ -26,7 +24,7 @@ const api = new Via('https://petstore3.swagger.io');
 // TypeScript knows the exact shape of request and response
 const pet = await api.post('/pet', {
   name: 'Rex',
-  photoUrls: []
+  photoUrls: [],
 });
 // ^? Pet type inferred from OpenAPI schema
 ```
@@ -57,6 +55,7 @@ const pet = await api.post('/pet', {
 ### The Problem
 
 Manual API client code is tedious and error-prone:
+
 - Writing types by hand for every endpoint
 - No autocomplete for routes or payloads
 - Runtime errors from typos or schema changes
@@ -65,6 +64,7 @@ Manual API client code is tedious and error-prone:
 ### The Solution
 
 Via auto-generates TypeScript types from OpenAPI schemas:
+
 - **Design-time safety**: Catch errors in your IDE, not production
 - **Self-documenting**: Types ARE the documentation
 - **Change-proof**: Schema updates automatically flow to your code
@@ -96,11 +96,13 @@ npx via
 ```
 
 The CLI will prompt you for:
+
 - **OpenAPI URL**: Where to fetch your schema (e.g., `https://api.example.com/openapi.json`)
 - **Base URL**: Your API's base URL (e.g., `https://api.example.com`)
 - **Schema Name**: A name for the generated types (e.g., `myApiSchema`)
 
 This generates:
+
 ```
 src/
 ├── schema/
@@ -123,7 +125,7 @@ const users = await api.get('/users');
 // Request bodies are type-checked too
 await api.post('/users', {
   name: 'Alice',
-  email: 'alice@example.com'
+  email: 'alice@example.com',
   // TypeScript errors if fields don't match schema
 });
 ```
@@ -270,12 +272,12 @@ const invalid = await api.get('/nonexistent');
 const newPet = await api.post('/pet', {
   name: 'Rex',
   photoUrls: [],
-  status: 'available'
+  status: 'available',
 });
 
 // Missing or wrong fields = compile error
 const invalid = await api.post('/pet', {
-  name: 'Rex'
+  name: 'Rex',
   // ^ Error: Missing required field 'photoUrls'
 });
 ```
@@ -288,7 +290,7 @@ const updated = await api.put('/pet', {
   id: 123,
   name: 'Max',
   photoUrls: [],
-  status: 'sold'
+  status: 'sold',
 });
 ```
 
@@ -312,6 +314,7 @@ npx via
 ```
 
 **Options:**
+
 - **OpenAPI Mode**: Auto-generate from OpenAPI URL
 - **Manual Mode**: Manage schemas yourself
 
@@ -320,11 +323,13 @@ npx via
 If you prefer manual control:
 
 1. Generate types with `openapi-typescript`:
+
    ```bash
    npx openapi-typescript https://api.example.com/openapi.json -o src/schema/mySchema.ts
    ```
 
 2. Update `src/apiRegistry.ts`:
+
    ```typescript
    import type { paths as mySchema } from './schema/mySchema.js';
 
@@ -417,14 +422,14 @@ Your Code (full IntelliSense)
 
 ## 🔍 Comparison with Alternatives
 
-| Feature | Via | openapi-fetch | axios | native fetch |
-|---------|-----|---------------|-------|--------------|
-| **Type Safety** | ✅ Full | ✅ Full | ❌ Manual | ❌ Manual |
-| **OpenAPI Integration** | ✅ CLI | ⚠️ DIY | ❌ None | ❌ None |
-| **Bundle Size** | 🟢 Tiny | 🟢 Tiny | 🔴 Large | 🟢 None |
-| **Zero Config** | ✅ Yes | ⚠️ Some | ❌ No | ✅ Yes |
-| **Dual Build (CJS+ESM)** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Native |
-| **Learning Curve** | 🟢 Low | 🟡 Medium | 🟢 Low | 🟢 Low |
+| Feature                  | Via     | openapi-fetch | axios     | native fetch |
+| ------------------------ | ------- | ------------- | --------- | ------------ |
+| **Type Safety**          | ✅ Full | ✅ Full       | ❌ Manual | ❌ Manual    |
+| **OpenAPI Integration**  | ✅ CLI  | ⚠️ DIY        | ❌ None   | ❌ None      |
+| **Bundle Size**          | 🟢 Tiny | 🟢 Tiny       | 🔴 Large  | 🟢 None      |
+| **Zero Config**          | ✅ Yes  | ⚠️ Some       | ❌ No     | ✅ Yes       |
+| **Dual Build (CJS+ESM)** | ✅ Yes  | ✅ Yes        | ✅ Yes    | ✅ Native    |
+| **Learning Curve**       | 🟢 Low  | 🟡 Medium     | 🟢 Low    | 🟢 Low       |
 
 ### When to Use Via
 
@@ -511,7 +516,20 @@ Via is under active development. Here's what's planned:
 
 Contributions are welcome! Via is an open-source project and we'd love your help.
 
-### Development Setup
+### For Developers
+
+**See [DEV.md](DEV.md) for the complete development guide**, including:
+
+- Development workflow and tooling
+- Testing with Vitest
+- Linting, formatting, and type checking
+- Build system (dual CJS + ESM output)
+- Git hooks and commit conventions
+- Release process with semantic-release
+- CLI development
+- Troubleshooting
+
+### Quick Setup
 
 ```bash
 # Clone the repo
@@ -596,12 +614,14 @@ MIT License — see [LICENSE](LICENSE) for details.
 ## 🙏 Acknowledgments
 
 Built with:
+
 - [TypeScript](https://www.typescriptlang.org/) — Type safety
 - [openapi-typescript](https://github.com/drwpow/openapi-typescript) — Schema generation
 - [Vitest](https://vitest.dev/) — Testing framework
 - [Conventional Commits](https://www.conventionalcommits.org/) — Commit standards
 
 Inspired by:
+
 - [openapi-fetch](https://github.com/drwpow/openapi-typescript/tree/main/packages/openapi-fetch) — Type-safe fetch client
 - [axios](https://axios-http.com/) — HTTP client
 - [ky](https://github.com/sindresorhus/ky) — Fetch wrapper

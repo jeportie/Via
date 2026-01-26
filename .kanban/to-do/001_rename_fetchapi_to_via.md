@@ -3,6 +3,7 @@
 ## 📋 Description
 
 Rename the `FetchApi` class to `Via` throughout the codebase to match the package name and improve branding consistency. This includes:
+
 - Class name in `src/FetchApi.ts`
 - File name itself
 - All imports and exports
@@ -11,6 +12,7 @@ Rename the `FetchApi` class to `Via` throughout the codebase to match the packag
 - Test files
 
 The main export should be `Via` so users can write:
+
 ```typescript
 import { Via } from '@jeportie/via';
 const api = new Via('https://api.example.com');
@@ -31,6 +33,7 @@ const api = new Via('https://api.example.com');
 ## 🧪 How to Test
 
 ### Human Testing
+
 1. Search codebase for "FetchApi" - should find zero results
 2. Search codebase for "fetchApi" - should find zero results
 3. Run `pnpm typecheck` - should succeed
@@ -38,6 +41,7 @@ const api = new Via('https://api.example.com');
 5. Import in a test project: `import { Via } from '@jeportie/via'` - should work
 
 ### AI Testing
+
 ```bash
 # Search for any remaining references
 grep -r "FetchApi" src/ __tests__/
@@ -56,6 +60,7 @@ pnpm build
 ## ✅ When to Validate
 
 Complete when:
+
 1. All acceptance criteria are checked
 2. No "FetchApi" references remain in source code
 3. TypeScript compilation and tests pass
@@ -66,6 +71,7 @@ Complete when:
 ### Implementation Approach
 
 This is a straightforward rename refactor:
+
 1. Rename file: `src/FetchApi.ts` → `src/Via.ts`
 2. Change class declaration: `class FetchApi` → `class Via`
 3. Update `src/index.ts` to export `Via`
@@ -74,6 +80,7 @@ This is a straightforward rename refactor:
 6. Verify no lingering references
 
 ### Difficulty
+
 **Easy** - Mechanical refactor with search-and-replace
 
 ### Key Files Involved
@@ -100,11 +107,13 @@ This is a straightforward rename refactor:
 ### Implementation Steps
 
 1. Rename the file:
+
    ```bash
    mv src/FetchApi.ts src/Via.ts
    ```
 
 2. Update class name in `src/Via.ts`:
+
    ```typescript
    // Before:
    export default class FetchApi<D extends keyof ApiRegistry> { ... }
@@ -114,12 +123,14 @@ This is a straightforward rename refactor:
    ```
 
 3. Update `src/index.ts`:
+
    ```typescript
    export { default as Via } from './Via.js';
    export type { default as Via } from './Via.js';
    ```
 
 4. Search and replace imports:
+
    ```bash
    # Find all imports
    grep -r "from './FetchApi" src/
@@ -127,6 +138,7 @@ This is a straightforward rename refactor:
    ```
 
 5. Update test files to use `Via`:
+
    ```typescript
    import Via from '../src/Via.js';
    const api = new Via('https://...');

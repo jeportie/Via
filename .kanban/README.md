@@ -30,17 +30,21 @@ Each request file should follow this format:
 # Request 001: [Brief Title]
 
 ## Description
+
 Clear description of the task or feature to implement.
 
 ## Acceptance Criteria
+
 - [ ] Criterion 1
 - [ ] Criterion 2
 - [ ] Criterion 3
 
 ## Context
+
 Any relevant context, links to related issues, or background information.
 
 ## Notes
+
 Additional notes, considerations, or constraints.
 ```
 

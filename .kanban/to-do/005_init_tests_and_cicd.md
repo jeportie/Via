@@ -10,14 +10,17 @@ Set up comprehensive test suite and CI/CD pipelines to ensure code quality and c
 4. **CLI Tests** - Test schema generation and registry updates
 
 Use Petstore API for realistic testing:
+
 - **OpenAPI URL**: `https://petstore3.swagger.io/api/v3/openapi.json`
 - **Base URL**: `https://petstore3.swagger.io/api/v3`
 
 Test both scenarios:
+
 - **Known schema** (Petstore - in registry)
 - **Unknown schema** (untyped mode with generic API)
 
 Set up CI/CD:
+
 - Run on every push and PR
 - Test matrix for Node 18, 20, 22
 - Quality checks (lint, typecheck, test, build)
@@ -26,6 +29,7 @@ Set up CI/CD:
 ## 🎯 Acceptance Criteria
 
 ### Tests
+
 - [ ] Unit tests for Via class methods (GET, POST, PUT, DELETE)
 - [ ] Unit tests for type utilities (`FilterRoutes`, `ApiBody`, `ApiReturn`)
 - [ ] Integration test using real Petstore API
@@ -37,6 +41,7 @@ Set up CI/CD:
 - [ ] Test coverage >80%
 
 ### CI/CD
+
 - [ ] GitHub Actions workflow configured
 - [ ] Runs on push to main and PRs
 - [ ] Tests on Node 18, 20, 22
@@ -50,21 +55,27 @@ Set up CI/CD:
 ### Human Testing
 
 1. Run test suite:
+
    ```bash
    pnpm test
    ```
+
    Expected: All tests pass
 
 2. Check coverage:
+
    ```bash
    pnpm test:coverage
    ```
+
    Expected: >80% coverage
 
 3. Run integration tests:
+
    ```bash
    pnpm test:integration
    ```
+
    Expected: Petstore API tests pass
 
 4. Verify CI/CD:
@@ -93,6 +104,7 @@ test -f .github/workflows/ci.yml && echo "✓ CI config exists"
 ## ✅ When to Validate
 
 Complete when:
+
 1. Test suite runs successfully
 2. Coverage exceeds 80%
 3. CI/CD pipeline passes on GitHub
@@ -104,6 +116,7 @@ Complete when:
 ### Implementation Approach
 
 1. **Create test structure**:
+
    ```
    __tests__/
    ├── unit/
@@ -123,6 +136,7 @@ Complete when:
 6. **Configure coverage** reporting
 
 ### Difficulty
+
 **Medium** - Requires understanding of Vitest, mocking, and CI/CD setup
 
 ### Key Files Involved
@@ -139,12 +153,14 @@ Complete when:
 ### Attention Points
 
 1. **API Rate Limits**: Petstore API may have rate limits, use sparingly or mock
+
    ```typescript
    // Use real API for integration tests
    // Use MSW or fetch mocks for unit tests
    ```
 
 2. **Temporary Files**: CLI tests need temporary directories
+
    ```typescript
    import { mkdtempSync, rmSync } from 'fs';
    import { tmpdir } from 'os';
@@ -155,6 +171,7 @@ Complete when:
    ```
 
 3. **Type Tests**: TypeScript type tests don't run, they compile
+
    ```typescript
    // These are compile-time checks
    // @ts-expect-error - This should fail
@@ -162,6 +179,7 @@ Complete when:
    ```
 
 4. **Async Tests**: Use proper async/await patterns
+
    ```typescript
    it('should fetch data', async () => {
      const result = await api.get('/endpoint');
@@ -170,6 +188,7 @@ Complete when:
    ```
 
 5. **CI Environment**: Use environment variables for configuration
+
    ```yaml
    env:
      NODE_ENV: test
@@ -228,7 +247,7 @@ describe('Via Class', () => {
         expect.objectContaining({
           method: 'GET',
           headers: { Accept: 'application/json' },
-        })
+        }),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -254,7 +273,7 @@ describe('Via Class', () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
-        })
+        }),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -324,9 +343,7 @@ describe('Petstore API Integration', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    await expect(
-      api.get('/pet/999999999')
-    ).rejects.toThrow('API Error');
+    await expect(api.get('/pet/999999999')).rejects.toThrow('API Error');
   });
 });
 ```
@@ -375,10 +392,7 @@ describe('CLI Schema Generation', () => {
     expect(existsSync(path.join(testDir, 'src/apiRegistry.ts'))).toBe(true);
 
     // Verify registry content
-    const registry = readFileSync(
-      path.join(testDir, 'src/apiRegistry.ts'),
-      'utf-8'
-    );
+    const registry = readFileSync(path.join(testDir, 'src/apiRegistry.ts'), 'utf-8');
     expect(registry).toContain('petstoreSchema');
     expect(registry).toContain('https://petstore3.swagger.io/api/v3');
   });
@@ -505,18 +519,15 @@ export default defineConfig({
       exclude: [
         'src/**/*.test.ts',
         'src/**/*.spec.ts',
-        'src/cli/**/*',  // CLI tested separately
-        'src/schema/**/*',  // Generated files
+        'src/cli/**/*', // CLI tested separately
+        'src/schema/**/*', // Generated files
       ],
       lines: 80,
       functions: 80,
       branches: 80,
       statements: 80,
     },
-    include: [
-      '__tests__/unit/**/*.test.ts',
-      '__tests__/integration/**/*.test.ts',
-    ],
+    include: ['__tests__/unit/**/*.test.ts', '__tests__/integration/**/*.test.ts'],
   },
 });
 ```
@@ -526,11 +537,7 @@ export default defineConfig({
 ```markdown
 <!-- In README.md -->
 
-[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
-[![Coverage](https://codecov.io/gh/jeportie/via/branch/main/graph/badge.svg)](https://codecov.io/gh/jeportie/via)
-[![CI](https://github.com/jeportie/via/workflows/CI/badge.svg)](https://github.com/jeportie/via/actions)
+[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/) [![Coverage](https://codecov.io/gh/jeportie/via/branch/main/graph/badge.svg)](https://codecov.io/gh/jeportie/via) [![CI](https://github.com/jeportie/via/workflows/CI/badge.svg)](https://github.com/jeportie/via/actions)
 ```
 
 ## 📚 Context & References
@@ -545,6 +552,7 @@ export default defineConfig({
 ## 🔗 Dependencies
 
 Should be done after:
+
 - 001 - Rename FetchApi to Via
 - 002 - Verify user file generation (needed for CLI tests)
 - 003 - Fix linting issues

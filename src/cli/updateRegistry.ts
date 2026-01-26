@@ -24,7 +24,6 @@ const REGISTRY_PATH = path.resolve('src/apiRegistry.ts');
 export function updateRegistry(entry: RegistryEntry): void {
   let content = fs.readFileSync(REGISTRY_PATH, 'utf8');
 
-
   if (content.includes(`"${entry.baseUrl}"`)) {
     console.log('⚠️ Base URL already exists in registry, skipping.');
 
@@ -38,10 +37,7 @@ export function updateRegistry(entry: RegistryEntry): void {
 
     let insertIndex = 0;
 
-    while (
-      insertIndex < lines.length &&
-      (lines[insertIndex]?.startsWith('//') || lines[insertIndex]?.trim() === '')
-    ) {
+    while (insertIndex < lines.length && (lines[insertIndex]?.startsWith('//') || lines[insertIndex]?.trim() === '')) {
       insertIndex++;
     }
 
@@ -49,12 +45,9 @@ export function updateRegistry(entry: RegistryEntry): void {
 
     content = lines.join('\n');
   }
-  content = content.replace(
-    /export interface ApiRegistry\s*{([\s\S]*?)}/,
-    (_m, body) => {
-      return `export interface ApiRegistry {\n  '${entry.baseUrl}': ${entry.schemaName};${body}\n}`;
-    }
-  );
+  content = content.replace(/export interface ApiRegistry\s*{([\s\S]*?)}/, (_m, body) => {
+    return `export interface ApiRegistry {\n  '${entry.baseUrl}': ${entry.schemaName};${body}\n}`;
+  });
 
   fs.writeFileSync(REGISTRY_PATH, content, 'utf8');
 }

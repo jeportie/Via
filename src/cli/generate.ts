@@ -23,7 +23,7 @@ type OpenApiAnswers = {
   url: string;
   baseUrl: string;
   schemaName: string;
-}
+};
 
 export async function generateFromOpenApi(): Promise<void> {
   const question: QuestionCollection = [
@@ -44,7 +44,7 @@ export async function generateFromOpenApi(): Promise<void> {
       name: 'schemaName',
       message: 'Schema name:',
       default: 'openapi-types',
-    }
+    },
   ];
 
   // eslint-disable-next-line import/no-named-as-default-member
@@ -60,8 +60,7 @@ export async function generateFromOpenApi(): Promise<void> {
     baseUrl,
     schemaName,
     schemaPath: fileDir,
-  })
+  });
 
   console.log('\n✨ Done! Registry updated.');
 }
-

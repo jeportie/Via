@@ -5,6 +5,7 @@ This document defines the standard format for all todo files in the `.kanban/to-
 ## File Naming Convention
 
 Use incremental numbering with leading zeros:
+
 - `001_todo_name.md`
 - `002_todo_name.md`
 - `003_todo_name.md`
@@ -30,9 +31,11 @@ Each todo file MUST contain the following sections:
 ## 🧪 How to Test
 
 ### Human Testing
+
 [Step-by-step instructions for manual testing]
 
 ### AI Testing
+
 [Instructions for automated testing or verification]
 
 ## ✅ When to Validate
@@ -42,19 +45,24 @@ Each todo file MUST contain the following sections:
 ## 🛠️ How to Implement
 
 ### Implementation Approach
+
 [High-level approach to solving the problem. Describe the strategy, files to modify, and key decisions.]
 
 ### Difficulty
+
 [Easy / Medium / Hard]
 
 ### Key Files Involved
+
 - `path/to/file1.ts` - What changes are needed
 - `path/to/file2.ts` - What changes are needed
 
 ### Attention Points
+
 [Important considerations, edge cases, potential pitfalls, or areas requiring extra care]
 
 ### Implementation Steps
+
 1. Step 1
 2. Step 2
 3. Step 3

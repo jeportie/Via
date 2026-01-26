@@ -5,18 +5,21 @@
 Add support for untyped mode to allow Via to work as a standard fetch wrapper for APIs that aren't in the registry. This enables Via to be used in two modes:
 
 **Typed Mode (default)**: Base URL must be in registry, full type safety
+
 ```typescript
-const api = new Via('https://petstore3.swagger.io/api/v3');  // Must be registered
-const pet = await api.get('/pet/123');  // Full type inference
+const api = new Via('https://petstore3.swagger.io/api/v3'); // Must be registered
+const pet = await api.get('/pet/123'); // Full type inference
 ```
 
 **Untyped Mode (opt-in)**: Any base URL, developer provides types
+
 ```typescript
 const api = new Via('https://unknown-api.com', { typed: false });
-const data = await api.get<MyType>('/endpoint');  // Generic type parameter
+const data = await api.get<MyType>('/endpoint'); // Generic type parameter
 ```
 
 This requires architectural decisions:
+
 - How to handle the constructor overload?
 - Should untyped mode use a separate class or conditional types?
 - How to maintain type safety for typed mode while allowing flexibility?
@@ -38,6 +41,7 @@ This requires architectural decisions:
 ### Human Testing
 
 **Typed Mode:**
+
 ```typescript
 import { Via } from '@jeportie/via';
 
@@ -52,6 +56,7 @@ const invalid = new Via('https://unknown-api.com');
 ```
 
 **Untyped Mode:**
+
 ```typescript
 import { Via } from '@jeportie/via';
 
@@ -102,6 +107,7 @@ describe('Via - Untyped Mode', () => {
 ## ✅ When to Validate
 
 Complete when:
+
 1. Both typed and untyped modes work correctly
 2. Type safety is maintained in typed mode
 3. Untyped mode provides flexibility without errors
@@ -113,6 +119,7 @@ Complete when:
 ### Implementation Approach
 
 **Option A: Constructor Overload** (Recommended)
+
 ```typescript
 class Via<D extends keyof ApiRegistry> {
   constructor(baseUrl: D);
@@ -124,27 +131,31 @@ class Via<D extends keyof ApiRegistry> {
 ```
 
 **Option B: Separate Classes**
+
 ```typescript
-class Via<D extends keyof ApiRegistry> { /* typed */ }
-class UntypedVia { /* untyped */ }
+class Via<D extends keyof ApiRegistry> {
+  /* typed */
+}
+class UntypedVia {
+  /* untyped */
+}
 ```
 
 **Option C: Conditional Types** (Most flexible)
+
 ```typescript
 type ViaConfig<T extends boolean> = { typed: T };
 
-class Via<
-  D extends string = string,
-  Typed extends boolean = true
-> {
+class Via<D extends string = string, Typed extends boolean = true> {
   constructor(
     baseUrl: Typed extends true ? (D extends keyof ApiRegistry ? D : never) : string,
-    config?: ViaConfig<Typed>
+    config?: ViaConfig<Typed>,
   );
 }
 ```
 
 ### Difficulty
+
 **Hard** - Requires careful TypeScript generic design and type constraints
 
 ### Key Files Involved
@@ -171,12 +182,14 @@ class Via<
 ### Attention Points
 
 1. **Type safety preservation**: Typed mode must remain strictly typed
+
    ```typescript
    // Must still error:
-   const api = new Via('https://unknown-api.com');  // ❌
+   const api = new Via('https://unknown-api.com'); // ❌
    ```
 
 2. **Generic constraints**: Untyped methods need optional generic parameters
+
    ```typescript
    get<T = unknown>(endpoint: string): Promise<T>
    ```
@@ -184,16 +197,21 @@ class Via<
 3. **Runtime vs compile-time**: Base URL validation only happens at compile time for typed mode
 
 4. **Config handling**: Config object should be optional and have sensible defaults
+
    ```typescript
-   { typed: true }  // default
+   {
+     typed: true;
+   } // default
    ```
 
 5. **Backward compatibility**: Existing typed usage must work unchanged
+
    ```typescript
-   const api = new Via('https://registered-url.com');  // Still works
+   const api = new Via('https://registered-url.com'); // Still works
    ```
 
 6. **Method signatures**: In untyped mode, endpoints are just `string`, not constrained
+
    ```typescript
    // Typed mode:
    get<E extends FilterRoutes<...>>(endpoint: E)
@@ -234,13 +252,7 @@ class Via<
    // src/Via.ts
 
    import type { ApiRegistry } from './apiRegistry.js';
-   import type {
-     ApiBody,
-     ApiReturn,
-     FilterRoutes,
-     HttpMethods,
-     EndpointKey
-   } from './types.js';
+   import type { ApiBody, ApiReturn, FilterRoutes, HttpMethods, EndpointKey } from './types.js';
 
    export type ViaConfig = {
      typed?: boolean;
@@ -264,15 +276,14 @@ class Via<
        // Optionally warn in development
        if (this.#typed && !(baseUrl in ({} as ApiRegistry))) {
          console.warn(
-           `[Via] Base URL "${baseUrl}" not found in ApiRegistry. ` +
-           `Consider adding it or use { typed: false }.`
+           `[Via] Base URL "${baseUrl}" not found in ApiRegistry. ` + `Consider adding it or use { typed: false }.`,
          );
        }
      }
 
      // Typed mode methods (when D extends keyof ApiRegistry)
      get<E extends D extends keyof ApiRegistry ? FilterRoutes<ApiRegistry[D], 'GET'> : never>(
-       endpoint: E
+       endpoint: E,
      ): Promise<D extends keyof ApiRegistry ? ApiReturn<ApiRegistry[D], E, 'GET'> : never>;
 
      // Untyped mode methods (when typed: false)
@@ -280,18 +291,14 @@ class Via<
 
      // Implementation
      get<E extends string, T = unknown>(
-       endpoint: E
+       endpoint: E,
      ): Promise<T | ApiReturn<ApiRegistry[D & keyof ApiRegistry], E, 'GET'>> {
        return this.#request(endpoint, 'GET');
      }
 
      // Similar for post, put, delete...
 
-     async #request<T = unknown>(
-       endpoint: string,
-       method: HttpMethods,
-       body?: unknown
-     ): Promise<T> {
+     async #request<T = unknown>(endpoint: string, method: HttpMethods, body?: unknown): Promise<T> {
        const url = this.#baseUrl + endpoint;
 
        const options: RequestInit = {
@@ -348,7 +355,7 @@ class Via<
 
 5. **Add JSDoc comments**:
 
-   ```typescript
+   ````typescript
    /**
     * Via - Type-safe fetch wrapper for TypeScript
     *
@@ -367,7 +374,7 @@ class Via<
    export default class Via<D extends keyof ApiRegistry | string = string> {
      // ...
    }
-   ```
+   ````
 
 ## 📚 Context & References
 
@@ -378,8 +385,10 @@ class Via<
 ## 🔗 Dependencies
 
 Should be done after:
+
 - 001 - Rename FetchApi to Via
 - 003 - Fix linting issues (to have clean base)
 
 Required for:
+
 - 005 - Init tests (needs both modes to test)

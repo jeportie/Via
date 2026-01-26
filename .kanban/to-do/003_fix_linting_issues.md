@@ -40,21 +40,27 @@ get<E extends FilterRoutes<ApiRegistry[D], 'GET'>>(
 ### Human Testing
 
 1. Run linting:
+
    ```bash
    pnpm lint
    ```
+
    Expected: "0 errors, 0 warnings"
 
 2. Run type checking:
+
    ```bash
    pnpm typecheck
    ```
+
    Expected: No TypeScript errors
 
 3. Check formatting:
+
    ```bash
    pnpm format
    ```
+
    Expected: No changes needed
 
 4. Verify in IDE: Hover over method calls, should show explicit return types
@@ -77,6 +83,7 @@ echo $?  # Should be 0
 ## ✅ When to Validate
 
 Complete when:
+
 1. `pnpm check` passes completely
 2. All acceptance criteria are checked
 3. IDE shows clear return types on hover
@@ -92,6 +99,7 @@ Complete when:
 4. Run formatter to ensure consistency
 
 ### Difficulty
+
 **Easy** - Mostly mechanical fixes with clear patterns
 
 ### Key Files Involved
@@ -109,9 +117,11 @@ Complete when:
 ### Attention Points
 
 1. **Return type complexity**: The return types use advanced generics
+
    ```typescript
-   Promise<ApiReturn<ApiRegistry[D], E, M>>
+   Promise<ApiReturn<ApiRegistry[D], E, M>>;
    ```
+
    Must match exactly with the `#request` method's return type
 
 2. **Method overloads**: If methods have different signatures, ensure return types are correct for each
@@ -119,6 +129,7 @@ Complete when:
 3. **Private methods**: Don't need explicit return types (TypeScript infers), but can add for clarity
 
 4. **Type imports**: May need to add type imports if not already present
+
    ```typescript
    import type { ApiBody, ApiReturn, FilterRoutes } from './types.js';
    ```
@@ -140,13 +151,7 @@ Complete when:
    ```typescript
    // src/Via.ts (after rename from FetchApi.ts)
 
-   import type {
-     ApiBody,
-     ApiReturn,
-     EndpointKey,
-     FilterRoutes,
-     HttpMethods
-   } from './types.js';
+   import type { ApiBody, ApiReturn, EndpointKey, FilterRoutes, HttpMethods } from './types.js';
    import type { ApiRegistry } from './apiRegistry.js';
 
    export default class Via<D extends keyof ApiRegistry> {
@@ -156,28 +161,26 @@ Complete when:
        this.#baseUrl = baseUrl;
      }
 
-     get<E extends FilterRoutes<ApiRegistry[D], 'GET'>>(
-       endpoint: E
-     ): Promise<ApiReturn<ApiRegistry[D], E, 'GET'>> {
+     get<E extends FilterRoutes<ApiRegistry[D], 'GET'>>(endpoint: E): Promise<ApiReturn<ApiRegistry[D], E, 'GET'>> {
        return this.#request(endpoint, 'GET');
      }
 
      post<E extends FilterRoutes<ApiRegistry[D], 'POST'>>(
        endpoint: E,
-       body: ApiBody<ApiRegistry[D], E, 'POST'>
+       body: ApiBody<ApiRegistry[D], E, 'POST'>,
      ): Promise<ApiReturn<ApiRegistry[D], E, 'POST'>> {
        return this.#request(endpoint, 'POST', body);
      }
 
      put<E extends FilterRoutes<ApiRegistry[D], 'PUT'>>(
        endpoint: E,
-       body: ApiBody<ApiRegistry[D], E, 'PUT'>
+       body: ApiBody<ApiRegistry[D], E, 'PUT'>,
      ): Promise<ApiReturn<ApiRegistry[D], E, 'PUT'>> {
        return this.#request(endpoint, 'PUT', body);
      }
 
      delete<E extends FilterRoutes<ApiRegistry[D], 'DELETE'>>(
-       endpoint: E
+       endpoint: E,
      ): Promise<ApiReturn<ApiRegistry[D], E, 'DELETE'>> {
        return this.#request(endpoint, 'DELETE');
      }
@@ -185,7 +188,7 @@ Complete when:
      async #request<E extends EndpointKey<ApiRegistry[D]>, M extends HttpMethods>(
        endpoint: E,
        method: M,
-       body?: ApiBody<ApiRegistry[D], E, M>
+       body?: ApiBody<ApiRegistry[D], E, M>,
      ): Promise<ApiReturn<ApiRegistry[D], E, M>> {
        // ... existing implementation
      }
@@ -193,6 +196,7 @@ Complete when:
    ```
 
 2. **Run ESLint auto-fix**:
+
    ```bash
    pnpm lint --fix
    ```
@@ -204,11 +208,13 @@ Complete when:
    - Address any rule violations
 
 4. **Run formatter**:
+
    ```bash
    pnpm format
    ```
 
 5. **Verify all checks pass**:
+
    ```bash
    pnpm check
    ```
@@ -228,4 +234,5 @@ Complete when:
 ## 🔗 Dependencies
 
 Should be done after:
+
 - 001 - Rename FetchApi to Via (to avoid renaming twice)
