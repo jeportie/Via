@@ -4,7 +4,8 @@ import { join } from 'node:path';
 const finalizeContext = (context) => {
   for (const commitGroup of context.commitGroups) {
     for (const commit of commitGroup.commits) {
-      commit.bodyLines = commit.body?.split('\n').filter((line) => line !== '') ?? [];
+      commit.bodyLines =
+        commit.body?.split('\n').filter((line) => line !== '') ?? [];
     }
   }
 
@@ -65,7 +66,10 @@ export default {
           ],
         },
         writerOpts: {
-          commitPartial: readFileSync(join(import.meta.dirname, 'commit.hbs'), 'utf-8'),
+          commitPartial: readFileSync(
+            join(import.meta.dirname, 'commit.hbs'),
+            'utf-8',
+          ),
           finalizeContext,
         },
       },

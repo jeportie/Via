@@ -1,6 +1,11 @@
 module.exports = {
   root: true,
-  extends: ['@webdeveric/eslint-config-ts', 'plugin:import/recommended', 'plugin:import/typescript', 'prettier'],
+  extends: [
+    '@webdeveric/eslint-config-ts',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'prettier',
+  ],
   plugins: ['@stylistic'],
   env: {
     browser: false,
@@ -14,7 +19,15 @@ module.exports = {
     },
   },
   settings: {
-    'import/extensions': ['.ts', '.mts', '.cts', '.js', '.mjs', '.cjs', '.json'],
+    'import/extensions': [
+      '.ts',
+      '.mts',
+      '.cts',
+      '.js',
+      '.mjs',
+      '.cjs',
+      '.json',
+    ],
     'import/resolver': {
       typescript: {
         project: './tsconfig.json',
@@ -76,9 +89,25 @@ module.exports = {
           caseInsensitive: true,
         },
         distinctGroup: false,
-        groups: ['builtin', 'external', 'internal', 'parent', ['sibling', 'index'], 'type', 'object'],
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          ['sibling', 'index'],
+          'type',
+          'object',
+        ],
         'newlines-between': 'always',
-        pathGroupsExcludedImportTypes: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
+        pathGroupsExcludedImportTypes: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+        ],
         warnOnUnassignedImports: true,
       },
     ],
@@ -87,7 +116,16 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['./.eslintrc.cjs', './*.js', './*.cjs', './*.mjs', './*.ts', './*.cts', './*.mts', './__tests__/**/*.ts'],
+      files: [
+        './.eslintrc.cjs',
+        './*.js',
+        './*.cjs',
+        './*.mjs',
+        './*.ts',
+        './*.cts',
+        './*.mts',
+        './__tests__/**/*.ts',
+      ],
       rules: {
         'import/no-default-export': 'off',
       },

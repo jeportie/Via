@@ -10,8 +10,14 @@
 //                                                                            //
 // ************************************************************************** //
 
-import type { ApiRegistry } from './apiRegistry.js';
-import type { ApiBody, ApiReturn, EndpointKey, FilterRoutes, HttpMethods } from './types.js';
+import type {
+  ApiBody,
+  ApiRegistry,
+  ApiReturn,
+  EndpointKey,
+  FilterRoutes,
+  HttpMethods,
+} from './types.js';
 
 export default class Via<D extends keyof ApiRegistry> {
   #baseUrl: D;
@@ -20,7 +26,9 @@ export default class Via<D extends keyof ApiRegistry> {
     this.#baseUrl = baseUrl;
   }
 
-  get<E extends FilterRoutes<ApiRegistry[D], 'GET'>>(endpoint: E): Promise<ApiReturn<ApiRegistry[D], E, 'GET'>> {
+  get<E extends FilterRoutes<ApiRegistry[D], 'GET'>>(
+    endpoint: E,
+  ): Promise<ApiReturn<ApiRegistry[D], E, 'GET'>> {
     return this.#request(endpoint, 'GET');
   }
 

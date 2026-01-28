@@ -11,5 +11,11 @@
     "allowJs": false,
     "noEmit": false
   },
-  "exclude": ["node_modules", "dist", "./vitest.config.ts", "./__tests__/**"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "./vitest.config.ts",
+    "./__tests__/**",
+    "./src/cli/**"
+  ]
 }

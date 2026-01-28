@@ -5,6 +5,9 @@
   "author": "Jérôme Portier <jeromep.dev@gmail.com>",
   "license": "MIT",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeportie/via.git"

@@ -11,7 +11,7 @@ console.log('\n🚀 Via — Typed Fetch API Registry Generator\n');
 
 type ModeAnswer = {
   mode: 'openapi' | 'manual';
-}
+};
 
 const questions: QuestionCollection = [
   {
@@ -21,22 +21,23 @@ const questions: QuestionCollection = [
     choices: [
       { name: 'OpenAPI (generate schema + registry)', value: 'openapi' },
       { name: 'Manual (manage schema yourself)', value: 'manual' },
-    ]
-  }
-]
+    ],
+  },
+];
 
 async function main(): Promise<void> {
-
   // eslint-disable-next-line import/no-named-as-default-member
   const { mode } = await inquirer.prompt<ModeAnswer>(questions);
-
-  ensureRegistryExists();
 
   if (mode === 'openapi') {
     await generateFromOpenApi();
   } else {
     console.log('✋ Manual mode selected.');
-    console.log('👉 You can now add schemas and edit src/apiRegistry.ts manually.');
+    console.log('👉 Creating registry file...');
+    ensureRegistryExists();
+    console.log(
+      '👉 You can now add schemas and edit src/apiRegistry.ts manually.',
+    );
   }
 }
 

@@ -20,8 +20,15 @@ export function ensureRegistryExists(): void {
     return;
   }
 
-  const content = `
-// ************************************************************************** //
+  // Ensure src directory exists
+  const srcDir = path.dirname(REGISTRY_PATH);
+
+  if (!fs.existsSync(srcDir)) {
+    fs.mkdirSync(srcDir, { recursive: true });
+    console.log(`✅ Created directory: ${srcDir}`);
+  }
+
+  const content = `// ************************************************************************** //
 //                                                                            //
 //   apiRegistry.ts                                                           //
 //                                                                            //
@@ -29,9 +36,21 @@ export function ensureRegistryExists(): void {
 //                                                                            //
 // ************************************************************************** //
 
-export interface ApiRegistry {
+/**
+ * This file augments the ApiRegistry interface from @jeportie/via
+ * to add type definitions for your API endpoints.
+ *
+ * Each entry maps a base URL to its OpenAPI-generated types.
+ */
+declare module '@jeportie/via' {
+  interface ApiRegistry {
+    // Your API endpoints will be registered here
+  }
 }
+
+export {};
 `;
 
   fs.writeFileSync(REGISTRY_PATH, content, 'utf8');
+  console.log(`✅ Created registry file: ${REGISTRY_PATH}`);
 }

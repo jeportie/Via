@@ -10,6 +10,14 @@
 //                                                                            //
 // ************************************************************************** //
 
-export type { ApiRegistry } from './apiRegistry.js';
-export type { ApiBody, ApiEndpoints, ApiParams, ApiReturn, EndpointKey, FilterRoutes, HttpMethods } from './types.js';
+export type {
+  ApiBody,
+  ApiEndpoints,
+  ApiParams,
+  ApiRegistry,
+  ApiReturn,
+  EndpointKey,
+  FilterRoutes,
+  HttpMethods,
+} from './types.js';
 export { default } from './Via.js';

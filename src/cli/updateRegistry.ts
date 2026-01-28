@@ -24,8 +24,7 @@ const REGISTRY_PATH = path.resolve('src/apiRegistry.ts');
 export function updateRegistry(entry: RegistryEntry): void {
   let content = fs.readFileSync(REGISTRY_PATH, 'utf8');
 
-
-  if (content.includes(`"${entry.baseUrl}"`)) {
+  if (content.includes(`'${entry.baseUrl}'`)) {
     console.log('⚠️ Base URL already exists in registry, skipping.');
 
     return;
@@ -38,9 +37,11 @@ export function updateRegistry(entry: RegistryEntry): void {
 
     let insertIndex = 0;
 
+    // Find the first non-comment, non-empty line
     while (
       insertIndex < lines.length &&
-      (lines[insertIndex]?.startsWith('//') || lines[insertIndex]?.trim() === '')
+      (lines[insertIndex]?.startsWith('//') ||
+        lines[insertIndex]?.trim() === '')
     ) {
       insertIndex++;
     }
@@ -49,11 +50,15 @@ export function updateRegistry(entry: RegistryEntry): void {
 
     content = lines.join('\n');
   }
+
+  // Update the declare module block to add the new API entry
   content = content.replace(
-    /export interface ApiRegistry\s*{([\s\S]*?)}/,
-    (_m, body) => {
-      return `export interface ApiRegistry {\n  '${entry.baseUrl}': ${entry.schemaName};${body}\n}`;
-    }
+    /(declare module '@jeportie\/via' {\s*interface ApiRegistry\s*{)([\s\S]*?)(}\s*})/,
+    (_match, opening, body, closing) => {
+      const newEntry = `\n    '${entry.baseUrl}': ${entry.schemaName};`;
+
+      return `${opening}${body}${newEntry}\n  ${closing}`;
+    },
   );
 
   fs.writeFileSync(REGISTRY_PATH, content, 'utf8');

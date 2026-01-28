@@ -38,6 +38,14 @@
     "noErrorTruncation": true,
     "useUnknownInCatchVariables": false
   },
-  "include": ["./*.js", "./*.mjs", "./*.cjs", "./*.ts", "src/**/*", "__tests__/**/*", "./.eslintrc.cjs"],
+  "include": [
+    "./*.js",
+    "./*.mjs",
+    "./*.cjs",
+    "./*.ts",
+    "src/**/*",
+    "__tests__/**/*",
+    "./.eslintrc.cjs"
+  ],
   "exclude": ["node_modules", "dist"]
 }
