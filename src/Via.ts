@@ -77,7 +77,7 @@ export default class Via<D extends keyof ApiRegistry> {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-      throw new Error(`[API Error]: ${response.status} from: %{endpoint}`);
+      throw new Error(`[API Error]: ${response.status} from: ${endpoint}`);
     }
 
     return response.json() as Promise<ApiReturn<ApiRegistry[D], E, M>>;
