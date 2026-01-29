@@ -6,7 +6,7 @@
 //   By: jeportie <jeromep.dev@gmail.com>                                     //
 //                                                                            //
 //   Created: 2026/01/20 15:45:37 by jeportie                                 //
-//   Updated: 2026/01/20 15:46:42 by jeportie                                 //
+//   Updated: 2026/01/29 19:00:11 by jeportie                                 //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,8 @@ import { promisify } from 'util';
 import inquirer from 'inquirer';
 
 import { ensureRegistryExists } from './registry.js';
+import { ensureSetupExists } from './setup.js';
+import { manageTsConfig } from './setupTsConfig.js';
 import { updateRegistry } from './updateRegistry.js';
 
 import type { QuestionCollection } from 'inquirer';
@@ -58,6 +60,8 @@ export async function generateFromOpenApi(): Promise<void> {
 
   // Now that all prompts are done, create the registry file
   ensureRegistryExists();
+  ensureSetupExists();
+  await manageTsConfig();
 
   const schemaDir = path.resolve('src/schema');
   const fileDir = path.join(schemaDir, `${schemaName}.ts`);

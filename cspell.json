@@ -28,7 +28,8 @@
     "typecheck",
     "vite",
     "vitest",
-    "webdeveric"
+    "webdeveric",
+    "tsconf"
   ],
   "ignorePaths": [
     ".vscode/",
