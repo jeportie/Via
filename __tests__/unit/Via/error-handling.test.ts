@@ -6,7 +6,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Via from '../../../src/Via.js';
+import Via from '@Via';
 
 import { createMockErrorResponse, createMockResponse } from './mocks.js';
 

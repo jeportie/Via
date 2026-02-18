@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@Via": ["src/Via.ts"]
+    },
     "noEmit": true,
     "target": "es2022",
     "lib": ["es2023", "dom"],

@@ -351,11 +351,9 @@ The project uses Husky to manage git hooks.
 Runs `lint-staged` which executes the following on staged files:
 
 1. **For `*.{js,cjs,mjs,ts,cts,mts}` files:**
-
    - ESLint with auto-fix
 
 2. **For `*.{js,cjs,mjs,ts,cts,mts,json,yml,yaml}` files:**
-
    - Run related tests (excluding integration tests)
 
 3. **For all files:**

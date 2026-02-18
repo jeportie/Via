@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import Via from '../../../src/Via.js';
+import Via from '@Via';
 
 import './mocks.js'; // Import mock types
 
