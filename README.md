@@ -2,12 +2,17 @@
 
 > Type-safe fetch wrapper for TypeScript
 
-[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via) [![CI](https://github.com/jeportie/via/workflows/CI/badge.svg)](https://github.com/jeportie/via/actions) [![codecov](https://codecov.io/gh/jeportie/via/branch/main/graph/badge.svg)](https://codecov.io/gh/jeportie/via) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
+[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via) [![CI](https://github.com/jeportie/Via/actions/workflows/pull-request-checks.yml/badge.svg?branch=main)](https://github.com/jeportie/Via/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
 
-Via is a fetch wrapper that generates TypeScript types from your OpenAPI schemas. You get autocomplete for routes, type-checked payloads, and errors caught at compile time instead of runtime.
+<p align="left">
+  <img src="https://img.shields.io/github/last-commit/jeportie/Via" alt="GitHub last commit">
+  <img src="https://img.shields.io/github/issues/jeportie/Via" alt="GitHub issues">
+</p>
+
+Via is a type-safe fetch wrapper powered by your OpenAPI schema. It generates TypeScript types for your API so your editor knows every endpoint, payload, and response. Invalid requests fail at compile time — not in production.
 
 ```typescript
-import { Via } from '@jeportie/via';
+import Via from '@jeportie/via';
 
 const api = new Via('https://petstore3.swagger.io');
 
@@ -59,7 +64,7 @@ src/
 Use it:
 
 ```typescript
-import { Via } from '@jeportie/via';
+import Via from '@jeportie/via';
 
 const api = new Via('https://api.example.com');
 
@@ -74,7 +79,19 @@ Done.
 
 ### What Via Does Now (v1.0)
 
-✅ **Type-safe REST client** — GET, POST, PUT, DELETE with full type inference ✅ **OpenAPI integration** — Generate types from OpenAPI 3.x specs ✅ **Interactive CLI** — Guided setup for schema generation ✅ **Grouped method style** — Use `api.get.users.findById(123)` or `api.get('/users/123')` ✅ **Untyped fallback** — Works as regular fetch wrapper for non-registered APIs ✅ **Dual module support** — CommonJS and ESM ✅ **Zero config** — Works out of the box
+✅ **Type-safe REST client** — GET, POST, PUT, DELETE with full type inference
+
+✅ **OpenAPI integration** — Generate types from OpenAPI 3.x specs
+
+✅ **Interactive CLI** — Guided setup for schema generation
+
+✅ **Grouped method style** — Use `api.get.users.findById(123)` or `api.get('/users/123')`
+
+✅ **Untyped fallback** — Works as regular fetch wrapper for non-registered APIs
+
+✅ **Dual module support** — CommonJS and ESM
+
+✅ **Zero config** — Works out of the box
 
 ### What's Coming Next
 
@@ -299,7 +316,7 @@ Custom transformers and middleware.
 **Why?** Every app has custom needs:
 
 ```typescript
-import { Via, Plugin } from '@jeportie/via';
+import Via, { Plugin } from '@jeportie/via';
 
 // Transform snake_case API to camelCase
 const camelCasePlugin: Plugin = {
@@ -347,7 +364,7 @@ Spins up mock server with realistic responses from your schema. Tests work even 
 ### Basic Usage
 
 ```typescript
-import { Via } from '@jeportie/via';
+import Via from '@jeportie/via';
 
 const api = new Via('https://api.example.com');
 
@@ -372,7 +389,7 @@ await api.delete('/users/123');
 ### Grouped Method Style (SDK)
 
 ```typescript
-import { Via } from '@jeportie/via';
+import Via from '@jeportie/via';
 
 const api = new Via('https://api.example.com');
 
@@ -395,7 +412,7 @@ The SDK style organizes endpoints by resource. TypeScript infers everything from
 For APIs without OpenAPI schemas:
 
 ```typescript
-import { Via } from '@jeportie/via';
+import Via from '@jeportie/via';
 
 // Use any URL, even unregistered ones
 const api = new Via('https://some-api.com');
@@ -452,7 +469,7 @@ Via uses TypeScript's type system to extract types from OpenAPI schemas.
 3. **Type Inference**: Via client extracts request/response types automatically
 4. **Runtime Safety**: Invalid requests fail at compile time, not runtime
 
-The type system walks your OpenAPI schema and figures out:
+Via leverages TypeScript's type system to extract and infer:
 
 - Which endpoints exist
 - Which HTTP methods they support
@@ -498,7 +515,7 @@ pnpm dev  # runs tests in watch mode
 ```
 via/
 ├── src/
-│   ├── FetchApi.ts          # Main client
+│   ├── Via.ts               # Main client
 │   ├── types.ts             # Type utilities
 │   ├── apiRegistry.ts       # URL → schema mapping
 │   └── cli/                 # CLI commands
