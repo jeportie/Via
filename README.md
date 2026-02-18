@@ -2,7 +2,7 @@
 
 > Type-safe fetch wrapper for TypeScript
 
-[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via) [![CI](https://github.com/jeportie/Via/actions/workflows/pull-request-checks.yml/badge.svg?branch=main)](https://github.com/jeportie/Via/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
+[![npm version](https://img.shields.io/npm/v/@jeportie/via.svg)](https://www.npmjs.com/package/@jeportie/via) [![PR Checks](https://github.com/jeportie/Via/actions/workflows/pull-request-checks.yml/badge.svg)](https://github.com/jeportie/Via/actions/workflows/pull-request-checks.yml) [![Release](https://github.com/jeportie/Via/actions/workflows/semantic-release.yml/badge.svg)](https://github.com/jeportie/Via/actions/workflows/semantic-release.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
 
 <p align="left">
   <img src="https://img.shields.io/github/last-commit/jeportie/Via" alt="GitHub last commit">
