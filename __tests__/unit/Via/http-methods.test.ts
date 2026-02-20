@@ -15,23 +15,14 @@ import {
 } from './mocks.js';
 
 describe('Via - HTTP Methods', () => {
-  /**
-   * Setup: Mock global fetch before each test
-   */
   beforeEach(() => {
     global.fetch = vi.fn();
   });
 
-  /**
-   * Teardown: Restore all mocks after each test
-   */
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  /**
-   * GET Method Tests
-   */
   describe('get()', () => {
     it('should make a GET request to the correct URL', async () => {
       const api = new Via('https://petstore3.swagger.io');
@@ -42,8 +33,6 @@ describe('Via - HTTP Methods', () => {
 
       await api.get('/pet/{petId}');
 
-      // Verify fetch was called with correct URL and options
-      expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
         'https://petstore3.swagger.io/pet/{petId}',
         {
@@ -64,28 +53,10 @@ describe('Via - HTTP Methods', () => {
 
       const result = await api.get('/pet/{petId}');
 
-      // toEqual() does deep equality check (compares object contents)
       expect(result).toEqual(mockPetData);
-    });
-
-    it('should include Accept header', async () => {
-      const api = new Via('https://petstore3.swagger.io');
-
-      (global.fetch as any).mockResolvedValueOnce(
-        createMockResponse(mockPetData),
-      );
-
-      await api.get('/pet/{petId}');
-
-      const [, options] = (global.fetch as any).mock.calls[0];
-
-      expect(options.headers).toHaveProperty('Accept', 'application/json');
     });
   });
 
-  /**
-   * POST Method Tests
-   */
   describe('post()', () => {
     it('should make a POST request with body', async () => {
       const api = new Via('https://petstore3.swagger.io');
@@ -96,7 +67,6 @@ describe('Via - HTTP Methods', () => {
 
       await api.post('/pet', mockPetData);
 
-      // Verify fetch was called with POST method and body
       expect(global.fetch).toHaveBeenCalledWith(
         'https://petstore3.swagger.io/pet',
         {
@@ -107,37 +77,6 @@ describe('Via - HTTP Methods', () => {
           },
           body: JSON.stringify(mockPetData),
         },
-      );
-    });
-
-    it('should serialize body as JSON', async () => {
-      const api = new Via('https://petstore3.swagger.io');
-
-      (global.fetch as any).mockResolvedValueOnce(
-        createMockResponse(mockPetData),
-      );
-
-      await api.post('/pet', mockPetData);
-
-      const [, options] = (global.fetch as any).mock.calls[0];
-
-      expect(options.body).toBe(JSON.stringify(mockPetData));
-    });
-
-    it('should include Content-Type header', async () => {
-      const api = new Via('https://petstore3.swagger.io');
-
-      (global.fetch as any).mockResolvedValueOnce(
-        createMockResponse(mockPetData),
-      );
-
-      await api.post('/pet', mockPetData);
-
-      const [, options] = (global.fetch as any).mock.calls[0];
-
-      expect(options.headers).toHaveProperty(
-        'Content-Type',
-        'application/json',
       );
     });
 
@@ -154,9 +93,6 @@ describe('Via - HTTP Methods', () => {
     });
   });
 
-  /**
-   * PUT Method Tests
-   */
   describe('put()', () => {
     it('should make a PUT request with body', async () => {
       const api = new Via('https://petstore3.swagger.io');
@@ -191,29 +127,8 @@ describe('Via - HTTP Methods', () => {
 
       expect(result).toEqual(mockUpdatedPetData);
     });
-
-    it('should include both Accept and Content-Type headers', async () => {
-      const api = new Via('https://petstore3.swagger.io');
-
-      (global.fetch as any).mockResolvedValueOnce(
-        createMockResponse(mockUpdatedPetData),
-      );
-
-      await api.put('/pet/{petId}', mockUpdatedPetData);
-
-      const [, options] = (global.fetch as any).mock.calls[0];
-
-      expect(options.headers).toHaveProperty('Accept', 'application/json');
-      expect(options.headers).toHaveProperty(
-        'Content-Type',
-        'application/json',
-      );
-    });
   });
 
-  /**
-   * DELETE Method Tests
-   */
   describe('delete()', () => {
     it('should make a DELETE request', async () => {
       const api = new Via('https://petstore3.swagger.io');
@@ -222,7 +137,6 @@ describe('Via - HTTP Methods', () => {
 
       await api.delete('/pet/{petId}');
 
-      // DELETE requests typically don't have a body
       expect(global.fetch).toHaveBeenCalledWith(
         'https://petstore3.swagger.io/pet/{petId}',
         {
@@ -232,30 +146,6 @@ describe('Via - HTTP Methods', () => {
           },
         },
       );
-    });
-
-    it('should not include Content-Type header', async () => {
-      const api = new Via('https://petstore3.swagger.io');
-
-      (global.fetch as any).mockResolvedValueOnce(createMockResponse({}));
-
-      await api.delete('/pet/{petId}');
-
-      const [, options] = (global.fetch as any).mock.calls[0];
-
-      expect(options.headers).not.toHaveProperty('Content-Type');
-    });
-
-    it('should not include a body', async () => {
-      const api = new Via('https://petstore3.swagger.io');
-
-      (global.fetch as any).mockResolvedValueOnce(createMockResponse({}));
-
-      await api.delete('/pet/{petId}');
-
-      const [, options] = (global.fetch as any).mock.calls[0];
-
-      expect(options.body).toBeUndefined();
     });
 
     it('should return response data', async () => {
